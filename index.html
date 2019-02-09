@@ -1,110 +1,56 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script>
-    <meta charset="utf-8" />
-    <title>Konva Multi-touch Scale Stage Demo</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #f0f0f0;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="container"></div>
-    <script>
-      var width = window.innerWidth
-      var height = window.innerHeight
-
-      var lastDist = 0
-      var startScale = 1
-
-      function getDistance(p1, p2) {
-        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
-      }
-
-      var stage = new Konva.Stage({
-        container: 'container',
-        width: width,
-        height: height,
-        draggable: true,
-        x: width / 2,
-        y: height / 2,
-        offset: {
-          x: width / 2,
-          y: height / 2
-        }
-      })
-
-      var layer = new Konva.Layer()
-
-      var triangle = new Konva.RegularPolygon({
-        x: 190,
-        y: stage.getHeight() / 2,
-        sides: 3,
-        radius: 80,
-        fill: 'green',
-        stroke: 'black',
-        strokeWidth: 4
-      })
-
-      var circle = new Konva.Circle({
-        x: 380,
-        y: stage.getHeight() / 2,
-        radius: 70,
-        fill: 'red',
-        stroke: 'black',
-        strokeWidth: 4
-      })
-
-      stage.getContent().addEventListener(
-        'touchmove',
-        function(evt) {
-          var touch1 = evt.touches[0]
-          var touch2 = evt.touches[1]
-
-          if (touch1 && touch2) {
-            var dist = getDistance(
-              {
-                x: touch1.clientX,
-                y: touch1.clientY
-              },
-              {
-                x: touch2.clientX,
-                y: touch2.clientY
-              }
-            )
-
-            if (!lastDist) {
-              lastDist = dist
-            }
-
-            var scale = (stage.getScaleX() * dist) / lastDist
-
-            stage.scaleX(scale)
-            stage.scaleY(scale)
-            stage.draw()
-            lastDist = dist
-          }
-        },
-        false
-      )
-
-      stage.getContent().addEventListener(
-        'touchend',
-        function() {
-          lastDist = 0
-        },
-        false
-      )
-
-      layer.add(triangle)
-      layer.add(circle)
-      stage.add(layer)
-    </script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" 
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" 
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <title>Kanvas</title>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Kanvas</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="row">
+    <div class="xs6">
+        <div class="card" style="width: 18rem;">
+          <img src="./assest/touch-gestures/svg/006-tap-4.svg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Move the object</h5>
+            <p class="card-text">Konva Multi-touch Scale Stage.</p>
+            <a href="konvaScale.html" class="btn btn-primary">More...</a>
+          </div>
+        </div>
+    </div>
+    <div class="xs6">
+        <div class="card" style="width: 18rem;">
+            <img src="./assest/touch-gestures/svg/001-tap.svg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Deletect the object</h5>
+              <p class="card-text">Pure Canvas HTML5.</p>
+              <a href="touchDetection.html" class="btn btn-primary">More...</a>
+            </div>
+        </div>
+    </div>
+  </div>
+</body>
 </html>
