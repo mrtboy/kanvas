@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="./src/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
@@ -20,6 +19,23 @@
         overflow: hidden;
         background-color: #f0f0f0;
       }
+    </style>
+    <style>
+        #svg {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        }
+
+        .handle {
+        fill: dodgerblue;
+        }
+
+        .path {
+        fill: none;
+        stroke: dodgerblue;
+        stroke-width: 6;
+        }
     </style>
   </head>
 
@@ -43,31 +59,45 @@
     <p>Description</p>
     <a href="http://fabricjs.com/touch-events">Source library</a>
     <div id="container">
-      <canvas width="1000" height="1000" id="fCanvas"></canvas>
+        <svg id="svg">  
+            <path class="path" />  
+            <circle class="handle" cx="0" cy="0" r="8" />
+            <circle class="handle" cx="0" cy="0" r="8" />  
+        </svg>
     </div>
     <script>
-      document.body.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-      }, false); 
-      var canvas = new fabric.Canvas('fCanvas');
-      var circle = new fabric.Circle({
-        radius:20,
-        fill: 'green', 
-        left:100, 
-        top:100
-      });
-      
+        // Amount to offset control points
+        var bezierWeight = 0.675;
 
-      var rec = new fabric.Rect({
-        left: 100,
-        top: 200,
-        fill: 'blue',
-        width: 90,
-        height: 60
-      });
-      canvas.add(rec);
+        var handles = document.querySelectorAll(".handle");
+        var path = document.querySelector(".path");
 
-      canvas.add(circle);
+        TweenLite.set(handles[0], { x: 400, y: 150 });
+        TweenLite.set(handles[1], { x: 200, y: 350 });
+
+        Draggable.create(handles, {
+        onDrag: updatePath
+        });
+
+        updatePath();
+
+        function updatePath() {
+            
+        var x1 = handles[0]._gsTransform.x;
+        var y1 = handles[0]._gsTransform.y;
+        
+        var x4 = handles[1]._gsTransform.x;
+        var y4 = handles[1]._gsTransform.y;
+        
+        var dx = Math.abs(x4 - x1) * bezierWeight;
+        
+        var x2 = x1 - dx;
+        var x3 = x4 + dx;
+        
+        var data = `M${x1} ${y1} C ${x2} ${y1} ${x3} ${y4} ${x4} ${y4}`;
+        
+        path.setAttribute("d", data);
+        }
 
     </script>
   </body>
